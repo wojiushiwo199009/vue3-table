@@ -1,9 +1,14 @@
 ## 示例图片
 
 <center class ='img'>
-<img title="XX" src="./src/assets/images/example.jpg">
-<img title="XX" src="./src/assets/images/example2.jpg" >
+
+![Fileter_transaction](https://github.com/wojiushiwo199009/vue3-table/tree/main/src/assets/images/example.jpg)
+![Fileter_transaction](https://github.com/wojiushiwo199009/vue3-table/tree/main/src/assets/images/example2.jpg)
+
 </center>
+图片为github上的，显示可能较慢
+
+### [github项目使用链接地址](https://github.com/wojiushiwo199009/vue3-table/tree/main)
 
 # 封装表格使用说明
 
