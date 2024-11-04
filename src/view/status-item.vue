@@ -37,7 +37,7 @@
         width="200"
         trigger="hover">
         <template #reference>
-          <img class="icon-img" src="../assets/images/warning.png" alt="" />
+          <img class="icon-img" src="../../assets/images/warning.png" alt="" />
         </template>
         <template #default>
           <div class="ope-status-pop-content">

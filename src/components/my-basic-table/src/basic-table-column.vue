@@ -150,7 +150,7 @@ export default defineComponent({
       default: () => {}
     }
   },
-  setup(props, context) {
+  setup() {
     const showTooltip = ref(false)
     const handleCellMouseEnter = (e: MouseEvent) => {
       let cellChild: HTMLElement | any = e.target
@@ -168,7 +168,7 @@ export default defineComponent({
         showTooltip.value = false
       }
     }
-    const handleClick = (item: { fun: (arg0: any) => any }, rowData: any) => {
+    const handleClick = (item: any , rowData: any) => {
       item.fun && item.fun(rowData)
     }
     return {
@@ -180,4 +180,3 @@ export default defineComponent({
 })
 </script>
 
-<style lang="scss" scoped></style>

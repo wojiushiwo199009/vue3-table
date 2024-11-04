@@ -108,7 +108,6 @@ import {
   onMounted,
   ref,
   computed,
-  h,
   watch
 } from 'vue'
 export default defineComponent({
@@ -297,7 +296,7 @@ export default defineComponent({
 })
 </script>
 
-<style lang="scss" scoped>
+<style lang="css" scoped>
 .basic-table-con{
   width: 100%;
   height: 100%;
@@ -308,9 +307,9 @@ export default defineComponent({
   padding-bottom: 1.25rem;
 } 
 .page-con {
-    width: 100%;
-    background: #fff;
-    text-align: right;
-    padding-top: 1rem;
-  }
+  width: 100%;
+  background: #fff;
+  text-align: right;
+  padding-top: 1rem;
+}
 </style>
