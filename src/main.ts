@@ -8,7 +8,9 @@ import ElementPlus from 'element-plus'
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
 import 'element-plus/dist/index.css'
 import { MyBasicTable } from 'npm-vue3-element-table'
+import 'npm-vue3-element-table/dist/style.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
+import directives from '@/directives/index'
 
 const app = createApp(App)
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
@@ -20,5 +22,6 @@ app
     locale: zhCn,
   })
   .use(MyBasicTable)
+  .use(directives)
 
 app.mount('#app')

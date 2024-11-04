@@ -9,7 +9,9 @@
         <el-input
           v-model="inputShowName"
           placeholder="请输入"
-          maxlength="255" />
+          size="small"
+          maxlength="255"
+        />
         <!-- 扩展名 -->
         <span v-if="row.type == 'file'">{{ extendName }}</span>
         <!-- 按钮 -->
@@ -17,7 +19,8 @@
         <el-icon><Close @click="cancel" /></el-icon>
       </template>
       <span v-else class="show-name-box">
-        <span :title="showName">{{ showName }}{{ extendName }}</span>
+        <!-- v-hide为自定义指令，在directives文件夹里面 -->
+        <span v-hide @click="goPath">{{ showName }}{{ extendName }}</span>
         <el-icon @click="edit"><EditPen /></el-icon>
       </span>
     </div>
@@ -34,12 +37,14 @@ const props = defineProps<{
     type: 'file' | 'folder'
   }
 }>()
-const $emit = defineEmits(['openDialog'])
+const $emit = defineEmits(['clickName'])
 const isEdit = ref(false)
 const inputShowName = ref('') // input内绑定名称
 const showName = ref('') // 表格内显示名称
 const extendName = ref('') // 扩展名
-
+function goPath() {
+  $emit('clickName', props.row.type, props.row)
+}
 function edit() {
   isEdit.value = true
   inputShowName.value = showName.value
@@ -49,15 +54,13 @@ function confirm() {
   showName.value = inputShowName.value
   ElMessage({
     message: '编辑成功',
-    type: 'success'
+    type: 'success',
   })
 }
 function cancel() {
   isEdit.value = false
 }
-
 function init() {
-  console.log(props.row, 'row')
   showName.value = props.row.userName
 }
 init()
@@ -91,9 +94,6 @@ init()
       > span {
         color: #206bfa;
         cursor: pointer;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
       }
       .el-icon {
         color: #206bfa;

@@ -45,7 +45,32 @@ const tableData = ref([
     ip: '172.27.133.22',
     startTime: '2024-10-29 13:14:33',
     endTime: '2024-10-29 13:14:33',
-  },{
+  },
+  {
+    type: 'folder',
+    createtime: '2024-10-29 13:14:33',
+    createpin: '',
+    updatetime: null,
+    updatepin: '',
+    yn: 1,
+    uuid: '6d995990-f629-4072-b237-93dc01115d97',
+    userAccount: 'gjx',
+    userName: 'gjx1',
+    module: '登录',
+    action: '登录',
+    chinese: 2,
+    else: 3,
+    target: '',
+    targetUuid: '6c219b34-db38-48d4-8dd0-a6e84454eacd',
+    targetName: 'gjx',
+    status: '成功',
+    message: null,
+    messageExtra: null,
+    ip: '172.27.133.22',
+    startTime: '2024-10-29 13:14:33',
+    endTime: '2024-10-29 13:14:33',
+  },
+  {
     type: 'file',
     createtime: '2024-10-29 13:14:33',
     createpin: '',
@@ -68,7 +93,32 @@ const tableData = ref([
     ip: '172.27.133.22',
     startTime: '2024-10-29 13:14:33',
     endTime: '2024-10-29 13:14:33',
-  },{
+  },
+  {
+    type: 'folder',
+    createtime: '2024-10-29 13:14:33',
+    createpin: '',
+    updatetime: null,
+    updatepin: '',
+    yn: 1,
+    uuid: '6d995990-f629-4072-b237-93dc01115d97',
+    userAccount: 'gjx',
+    userName: 'gjx1',
+    module: '登录',
+    action: '登录',
+    chinese: 2,
+    else: 3,
+    target: '',
+    targetUuid: '6c219b34-db38-48d4-8dd0-a6e84454eacd',
+    targetName: 'gjx',
+    status: '成功',
+    message: null,
+    messageExtra: null,
+    ip: '172.27.133.22',
+    startTime: '2024-10-29 13:14:33',
+    endTime: '2024-10-29 13:14:33',
+  },
+  {
     type: 'file',
     createtime: '2024-10-29 13:14:33',
     createpin: '',
@@ -91,7 +141,8 @@ const tableData = ref([
     ip: '172.27.133.22',
     startTime: '2024-10-29 13:14:33',
     endTime: '2024-10-29 13:14:33',
-  },{
+  },
+  {
     type: 'file',
     createtime: '2024-10-29 13:14:33',
     createpin: '',
@@ -114,8 +165,9 @@ const tableData = ref([
     ip: '172.27.133.22',
     startTime: '2024-10-29 13:14:33',
     endTime: '2024-10-29 13:14:33',
-  },{
-    type: 'file',
+  },
+  {
+    type: 'folder',
     createtime: '2024-10-29 13:14:33',
     createpin: '',
     updatetime: null,
@@ -137,53 +189,8 @@ const tableData = ref([
     ip: '172.27.133.22',
     startTime: '2024-10-29 13:14:33',
     endTime: '2024-10-29 13:14:33',
-  },{
-    type: 'file',
-    createtime: '2024-10-29 13:14:33',
-    createpin: '',
-    updatetime: null,
-    updatepin: '',
-    yn: 1,
-    uuid: '6d995990-f629-4072-b237-93dc01115d97',
-    userAccount: 'gjx',
-    userName: 'gjx1',
-    module: '登录',
-    action: '登录',
-    chinese: 2,
-    else: 3,
-    target: '',
-    targetUuid: '6c219b34-db38-48d4-8dd0-a6e84454eacd',
-    targetName: 'gjx',
-    status: '成功',
-    message: null,
-    messageExtra: null,
-    ip: '172.27.133.22',
-    startTime: '2024-10-29 13:14:33',
-    endTime: '2024-10-29 13:14:33',
-  },{
-    type: 'file',
-    createtime: '2024-10-29 13:14:33',
-    createpin: '',
-    updatetime: null,
-    updatepin: '',
-    yn: 1,
-    uuid: '6d995990-f629-4072-b237-93dc01115d97',
-    userAccount: 'gjx',
-    userName: 'gjx1',
-    module: '登录',
-    action: '登录',
-    chinese: 2,
-    else: 3,
-    target: '',
-    targetUuid: '6c219b34-db38-48d4-8dd0-a6e84454eacd',
-    targetName: 'gjx',
-    status: '成功',
-    message: null,
-    messageExtra: null,
-    ip: '172.27.133.22',
-    startTime: '2024-10-29 13:14:33',
-    endTime: '2024-10-29 13:14:33',
-  },{
+  },
+  {
     type: 'file',
     createtime: '2024-10-29 13:14:33',
     createpin: '',
@@ -297,11 +304,14 @@ const tableOptions = computed(() => {
     },
     {
       prop: 'operationName',
-      showOverflowToolTip: true,
       width: 200,
       label: '操作对象',
       render: (row: any) => {
-        return h(editName)
+        return h(editName, {
+          onClickName: (type: string, data: unknown) => {
+            clickName(type, data)
+          },
+        } as any)
       },
     },
     {
@@ -335,6 +345,9 @@ const tableObj = computed(() => {
   }
   return table
 })
+const clickName = (type, row) => {
+  console.log('点击名称', type, row)
+}
 const pagingChange = (type: string, val: number) => {
   console.log(type, val, '分页')
 }
@@ -354,8 +367,5 @@ const sortChange = (obj: any) => {
 }
 .mgl60 {
   margin-left: 60px;
-}
-.page-con{
-  margin-top: 20px;
 }
 </style>
