@@ -4,6 +4,7 @@
   <div class="basic-table-con">
     <!-- table表格数据 -->
     <el-table
+      :border="table.config.resizable"
       :row-key="table.config.rowKey"
       ref="basicTable"
       class="basic-table"
@@ -23,34 +24,40 @@
       @select="handlerSelect"
       :default-expand-all="table.config.defaultExpandAll"
       :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
-      :default-sort="table.config.defaultSort">
+      :default-sort="table.config.defaultSort"
+    >
       <template #empty>
-          <div>
-            <span v-if="!$slots.empty">暂无数据</span>
-            <slot v-if="$slots.empty" name="empty"></slot>
+        <div>
+          <span v-if="!$slots.empty">暂无数据</span>
+          <slot v-if="$slots.empty" name="empty"></slot>
         </div>
       </template>
       <el-table-column
+        :resizable="table.config.resizable"
         v-if="table.config.hasSelection"
         :reserve-selection="table.config.reserveSelection"
         type="selection"
         :selectable="selectable"
         width="56"
-        key="hasSelection"></el-table-column>
-      <el-table-column v-if="table.config.hasRadio" width="45" key="hasRadio">
+        key="hasSelection"
+      ></el-table-column>
+      <el-table-column v-if="table.config.hasRadio" width="30" key="hasRadio">
         <template #default="scope">
           <el-radio
             class="table-item-radio"
             :label="scope.row[table.config.rowKey]"
             :disabled="scope.row.selectable"
             v-model="radioValue"
-            @change="getCurrentRow(scope.row)"></el-radio>
+            @change="getCurrentRow(scope.row)"
+          ></el-radio>
         </template>
       </el-table-column>
       <basicTableColumn
         v-for="(item, index) in tableObj.option || []"
         :item="item"
-        :key="index"></basicTableColumn>
+        :resizable="table.config.resizable"
+        :key="index"
+      ></basicTableColumn>
 
       <el-table-column
         v-if="table.operation.show"
@@ -59,7 +66,9 @@
         "
         :label="table.operation.label"
         :width="table.operation.width"
-        :min-width="table.operation.minWidth">
+        :min-width="table.operation.minWidth"
+        :resizable="table.config.resizable"
+      >
         <template #default="scope">
           <el-button
             v-for="(i, idx) in scope.row.operation"
@@ -68,11 +77,13 @@
             :disabled="i.disabled"
             :class="i.btnClassName ? i.btnClassName : ''"
             size="small"
-            @click="i.fun(i, scope.row)">
+            @click="i.fun(i, scope.row)"
+          >
             <el-tooltip
               :content="i.tooltipContent"
               placement="top-start"
-              :disabled="i.tooltipState == 1 ? false : true">
+              :disabled="i.tooltipState == 1 ? false : true"
+            >
               <i v-if="table.operation.showIcon" :class="i.className"></i>
               <span v-else :class="i.className">{{ i.value }}</span>
             </el-tooltip>
@@ -92,7 +103,8 @@
           Pagination.total > 10
             ? 'slot,->, sizes, prev, pager, next, jumper'
             : 'slot'
-        ">
+        "
+      >
         <span class="el-pagination-total-num">
           共{{ Pagination.total }}条数据
         </span></el-pagination
@@ -103,47 +115,41 @@
 
 <script lang="ts">
 import BasicTableColumn from './basic-table-column.vue'
-import {
-  defineComponent,
-  onMounted,
-  ref,
-  computed,
-  watch
-} from 'vue'
+import { defineComponent, onMounted, ref, computed, watch } from 'vue'
 export default defineComponent({
   name: 'basicTable',
   components: {
-    BasicTableColumn
+    BasicTableColumn,
   },
   props: {
     currentMenu: {
       type: String,
-      default: ''
+      default: '',
     },
     tableObj: {
       type: Object,
-      default: () => null
+      default: () => null,
     },
     Pagination: {
       type: Object,
       default: () => {
         return {
           pageSize: 9999,
-          currentPage: 1
+          currentPage: 1,
         }
       },
-      required: false
+      required: false,
     },
     tableType: [String],
     radio: {
       //单选框初始默认值
       type: String,
-      default: ''
+      default: '',
     },
     fun: {
       type: Function,
-      required: false
-    }
+      required: false,
+    },
   },
   setup(props, context) {
     const radioValue = ref('')
@@ -159,7 +165,7 @@ export default defineComponent({
           radioValue.value = ''
         }
       },
-      { deep: true }
+      { deep: true },
     )
     const getCurrentRow = (row: any) => {
       context.emit('getCurrentRow', row)
@@ -191,7 +197,8 @@ export default defineComponent({
           defaultExpandAll: config.defaultExpandAll || false, //树形结构是否默认展开所有行
           rowKey: config.rowKey || null, //为表格数据的唯一值，例如id、uuid
           reserveSelection: config.reserveSelection, // 仅对 type=selection 的列有效
-          hasSelection: config.hasSelection // 是否再多显示一个多选框
+          hasSelection: config.hasSelection, // 是否再多显示一个多选框
+          resizable: config.resizable || false, //列是否可拖拽
         },
         operation: {
           label: operation.label || '操作',
@@ -199,12 +206,12 @@ export default defineComponent({
           fixed: operation.fixed || false,
           show: operation.show || false,
           minWidth: operation.minWidth || '',
-          showIcon: operation.showIcon || false
-        }
+          showIcon: operation.showIcon || false,
+        },
       }
       return table
     })
- 
+
     const rowClick = (row: {}) => {
       context.emit('rowClick', row)
     }
@@ -255,7 +262,7 @@ export default defineComponent({
               ? 'ASC'
               : col.order == 'descending'
                 ? 'DESC'
-                : null
+                : null,
         }
         context.emit('sortChange', sort)
       }
@@ -290,14 +297,14 @@ export default defineComponent({
       handleCurrentChange,
       sortChange,
       getCurrentRow,
-      radioValue
+      radioValue,
     }
-  }
+  },
 })
 </script>
 
 <style lang="css" scoped>
-.basic-table-con{
+.basic-table-con {
   width: 100%;
   height: 100%;
   box-sizing: border-box;
@@ -305,7 +312,7 @@ export default defineComponent({
   background: #fff;
   justify-content: space-between;
   padding-bottom: 1.25rem;
-} 
+}
 .page-con {
   width: 100%;
   background: #fff;

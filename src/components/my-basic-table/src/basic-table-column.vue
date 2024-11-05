@@ -19,7 +19,8 @@
     :show-overflow-tooltip="item.showOverflowToolTip"
     :sort-orders="['ascending', 'descending']"
     :sort-method="item.sortMethod"
-    :sortable="item.sortMethod ? true : item.sortProp ? 'custom' : false">
+    :sortable="item.sortMethod ? true : item.sortProp ? 'custom' : false"
+     :resizable="resizable">
     <template #header>
       <span v-if="item.headerRender">
         <!-- 日志列表有示例，自定义表头 -->
@@ -144,7 +145,10 @@ export default defineComponent({
   components: {
     'ex-slot': exSlot
   },
-  props: {
+  props: { resizable: {
+      type: Boolean,
+      default: false
+    },
     item: {
       type: Object,
       default: () => {}

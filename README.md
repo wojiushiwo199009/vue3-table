@@ -1,5 +1,7 @@
 # table-use-example
 
+## components文件夹里面是封装的源码，可以查看
+
 This template should help get you started developing with Vue 3 in Vite.
 
 ## Recommended IDE Setup
