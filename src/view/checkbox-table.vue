@@ -32,6 +32,8 @@ const tableData = ref([
     uuid: '0d995990-f629-4072-b237-93dc01115d97',
     userAccount: 'gjx',
     userName: 'gjx1',
+    managerNum: 3,
+    multipleTipContent: ['account1', 'account2', 'account3'],
     module: '登录',
     action: '登录',
     chinese: 2,
@@ -49,6 +51,8 @@ const tableData = ref([
   {
     type: 'folder',
     createtime: '2024-10-29 13:14:33',
+    managerNum: 3,
+    multipleTipContent: ['account1', 'account2', 'account3'],
     createpin: '',
     updatetime: null,
     updatepin: '',
@@ -72,6 +76,8 @@ const tableData = ref([
   },
   {
     type: 'file',
+    managerNum: 3,
+    multipleTipContent: ['account1', 'account2', 'account3'],
     createtime: '2024-10-29 13:14:33',
     createpin: '',
     updatetime: null,
@@ -95,6 +101,8 @@ const tableData = ref([
     endTime: '2024-10-29 13:14:33',
   },
   {
+    managerNum: 3,
+    multipleTipContent: ['account1', 'account2', 'account3'],
     type: 'folder',
     createtime: '2024-10-29 13:14:33',
     createpin: '',
@@ -119,6 +127,8 @@ const tableData = ref([
     endTime: '2024-10-29 13:14:33',
   },
   {
+    managerNum: 3,
+    multipleTipContent: ['account1', 'account2', 'account3'],
     type: 'file',
     createtime: '2024-10-29 13:14:33',
     createpin: '',
@@ -143,6 +153,8 @@ const tableData = ref([
     endTime: '2024-10-29 13:14:33',
   },
   {
+    managerNum: 3,
+    multipleTipContent: ['account1', 'account2', 'account3'],
     type: 'file',
     createtime: '2024-10-29 13:14:33',
     createpin: '',
@@ -167,6 +179,8 @@ const tableData = ref([
     endTime: '2024-10-29 13:14:33',
   },
   {
+    managerNum: 3,
+    multipleTipContent: ['account1', 'account2', 'account3'],
     type: 'folder',
     createtime: '2024-10-29 13:14:33',
     createpin: '',
@@ -191,6 +205,8 @@ const tableData = ref([
     endTime: '2024-10-29 13:14:33',
   },
   {
+    managerNum: 3,
+    multipleTipContent: ['account1', 'account2', 'account3'],
     type: 'file',
     createtime: '2024-10-29 13:14:33',
     createpin: '',
@@ -215,6 +231,32 @@ const tableData = ref([
     endTime: '2024-10-29 13:14:33',
   },
 ])
+
+const addOperation = (server: any) => {
+  const operation = []
+  operation.push({
+    value: '删除',
+    className: 'del',
+    fun: (item, row) => {
+      return openDrawer('删除', row)
+    },
+  })
+  operation.push({
+    value: '编辑',
+    fun: (item, row) => {
+      return openDrawer('编辑', row)
+    },
+  })
+  return (server.operation = operation)
+}
+const openDrawer = (str: string, obj: object) => {
+  console.log(type)
+}
+tableData.value.map((item: any) => {
+  // @ts-ignore
+  item.operation = addOperation(item)
+})
+
 const Pagination = reactive({
   pagingData: [10, 50, 100, 200],
   pageSize: 10,
@@ -248,6 +290,13 @@ const tableOptions = computed(() => {
           row.userAccount ? row.userAccount + '（' + row.userName + '）' : '-',
         )
       },
+    },
+    {
+      prop: 'managerNum',
+      label: '管理员',
+      multipleTip: true,
+      multipleTipContent: 'multipleTipContent',
+      showOverflowToolTip: true,
     },
     {
       label: '作业量',
@@ -339,6 +388,7 @@ const tableObj = computed(() => {
   const table = {
     data: tableData.value,
     option: tableOptions.value,
+    operation: { show: true },
     config: {
       hasSelection: true,
       defaultSort: { prop: 'startTime', order: 'descending' },
