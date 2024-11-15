@@ -20,7 +20,8 @@
     :sort-orders="['ascending', 'descending']"
     :sort-method="item.sortMethod"
     :sortable="item.sortMethod ? true : item.sortProp ? 'custom' : false"
-     :resizable="resizable">
+    :resizable="resizable"
+  >
     <template #header>
       <span v-if="item.headerRender">
         <!-- 日志列表有示例，自定义表头 -->
@@ -31,7 +32,8 @@
         <el-tooltip
           :content="Object.keys(item).includes('tipContent') && item.tipContent"
           placement="top"
-          v-if="item.tipContent && item.tipContent.length > 0">
+          v-if="item.tipContent && item.tipContent.length > 0"
+        >
           <i class="troila troila-icon-tishi"></i>
         </el-tooltip>
       </span>
@@ -44,23 +46,28 @@
           :enterable="false"
           :content="scope.row[item.tooltipContent]"
           placement="right"
-          v-if="item.statusTip && scope.row[item.tooltipContent]">
+          v-if="item.statusTip && scope.row[item.tooltipContent]"
+        >
           <i class="troila troila-icon-tishi"></i>
         </el-tooltip>
       </div>
       <div
         v-else-if="item.multipleTip"
         class="multiple-tip default-tool"
-        @mouseenter="handleCellMouseEnter">
+        @mouseenter="handleCellMouseEnter"
+      >
         <el-tooltip
-          placement="top-start"
+          placement="top"
           :disabled="
-            !showTooltip && scope.row[item.multipleTipContent].length <= 1
-          ">
+            !showTooltip && scope.row[item.multipleTipContent].length < 1
+          "
+        >
           <template #content>
-            <div v-for="i in scope.row[item.multipleTipContent]" :key="i">
-              {{ i }}
-              <br />
+            <div class="multip-content">
+              <div v-for="i in scope.row[item.multipleTipContent]" :key="i">
+                {{ i }}
+                <br />
+              </div>
             </div>
           </template>
 
@@ -72,21 +79,24 @@
           :render="item.render"
           :row="scope.row"
           :index="scope.$index"
-          :column="item"></ex-slot>
+          :column="item"
+        ></ex-slot>
       </span>
       <span v-else-if="item.prop == 'expand'">
         <ex-slot
           :render="item.render"
           :row="scope.row"
           :index="scope.$index"
-          :column="item"></ex-slot>
+          :column="item"
+        ></ex-slot>
       </span>
       <template v-else-if="item.children?.length">
         <!-- 递归调用, .vue文件名 是非index的，可以直接使用文件名调用自己 -->
         <basicTableColumn
           v-for="(i, index) in item.children || []"
           :item="i"
-          :key="index">
+          :key="index"
+        >
         </basicTableColumn>
       </template>
 
@@ -97,7 +107,8 @@
         :prop="item.prop"
         class="status"
         :fun="item.fun"
-        @click="handleClick(item, scope.row)">
+        @click="handleClick(item, scope.row)"
+      >
         <span v-if="scope.row[item.status]" :class="scope.row[item.status]"
           >●</span
         >
@@ -106,13 +117,14 @@
             { 'troila-link': item.fun },
             { 'text-crop': item.showOverflowToolTip },
             { 'text-deleted': scope.row[item.deleted] },
-            scope.row[item.className]
+            scope.row[item.className],
           ]"
           v-else-if="
             scope.row[item.prop] ||
             (typeof scope.row[item.prop] == 'number' &&
               scope.row[item.prop] == 0)
-          ">
+          "
+        >
           {{ scope.row[item.prop] }}
         </span>
 
@@ -124,7 +136,7 @@
 
 <script lang="ts">
 import { ref, h, defineComponent } from 'vue'
-let exSlot = {
+const exSlot = {
   functional: true,
   props: {
     row: Object,
@@ -132,32 +144,33 @@ let exSlot = {
     index: Number,
     columns: {
       type: Array,
-      default: null
-    }
+      default: null,
+    },
   },
   render: (data: any) => {
     return h(data.render(data.row), { row: data.row })
-  }
+  },
 }
 
 export default defineComponent({
   name: 'basicTableColumn',
   components: {
-    'ex-slot': exSlot
+    'ex-slot': exSlot,
   },
-  props: { resizable: {
+  props: {
+    resizable: {
       type: Boolean,
-      default: false
+      default: false,
     },
     item: {
       type: Object,
-      default: () => {}
-    }
+      default: () => {},
+    },
   },
   setup() {
     const showTooltip = ref(false)
     const handleCellMouseEnter = (e: MouseEvent) => {
-      let cellChild: HTMLElement | any = e.target
+      const cellChild: HTMLElement | any = e.target
       const range = document.createRange()
       range.setStart(cellChild, 0)
       range.setEnd(cellChild, cellChild.childNodes.length)
@@ -172,15 +185,21 @@ export default defineComponent({
         showTooltip.value = false
       }
     }
-    const handleClick = (item: any , rowData: any) => {
+    const handleClick = (item: any, rowData: any) => {
       item.fun && item.fun(rowData)
     }
     return {
       showTooltip,
       handleCellMouseEnter,
-      handleClick
+      handleClick,
     }
-  }
+  },
 })
 </script>
 
+<style lang="scss" scoped>
+.multip-content {
+  max-height: 240px;
+  overflow-y: auto;
+}
+</style>
